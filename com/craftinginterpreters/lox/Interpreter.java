@@ -29,6 +29,9 @@ class Interpreter implements Expr.Visitor<Object> {
             case MINUS:
                 checkNumberOperand(expr.operator, right);
                 return -(double) right;
+            case PLUS:
+                checkNumberOperand(expr.operator, right);
+                return (double) right;
         }
 
         // Unreachable
@@ -76,7 +79,7 @@ class Interpreter implements Expr.Visitor<Object> {
                     return stringify(left) + stringify(right);
                 }
 
-                throw new RuntimeError(expr.operator, "Operands must be two numbers or two strings.");
+                throw new RuntimeError(expr.operator, "Operands unable to be processed");
             case SLASH:
                 checkNumberOperands(expr.operator, left, right);
                 return (double) left / (double) right;
