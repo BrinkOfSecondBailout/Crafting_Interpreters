@@ -49,6 +49,40 @@ class Scanner {
         return tokens;
     }
 
+    private boolean isAtEnd() {
+        return current >= source.length();
+    }
+
+    private char advance() {
+        // Because substring makes the endIndex exclusive therefore we purposely go one beyond the start index
+        return source.charAt(current++);
+    }
+
+    private void addToken(TokenType type) {
+        addToken(type, null);
+    }
+
+    private void addToken(TokenType type, Object literal) {
+        String text = source.substring(start, current);
+        tokens.add(new Token(type, text, literal, line));
+    }
+
+    private boolean match(char expected) {
+        if (isAtEnd())
+            return false;
+        if (source.charAt(current) != expected)
+            return false;
+
+        current++;
+        return true;
+    }
+
+    private char peek() {
+        if (isAtEnd())
+            return '\0';
+        return source.charAt(current);
+    }
+
     private void scanToken() {
         char c = advance();
         switch (c) {
@@ -155,37 +189,8 @@ class Scanner {
         addToken(STRING, value);
     }
 
-    private boolean match(char expected) {
-        if (isAtEnd()) return false;
-        if (source.charAt(current) != expected) return false;
-
-        current++;
-        return true;
-    }
-
-    private char peek() {
-        if (isAtEnd()) return '\0';
-        return source.charAt(current);
-    }
-
     private boolean isDigit(char c) {
         return c >= '0' && c <= '9';
     }
 
-    private boolean isAtEnd() {
-        return current >= source.length();
-    }
-
-    private char advance() {
-        return source.charAt(current++);
-    }
-
-    private void addToken(TokenType type) {
-        addToken(type, null);
-    }
-
-    private void addToken(TokenType type, Object literal) {
-        String text = source.substring(start, current);
-        tokens.add(new Token(type, text, literal, line));
-    }
 }
