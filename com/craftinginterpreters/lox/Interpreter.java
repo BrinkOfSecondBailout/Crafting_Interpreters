@@ -72,13 +72,10 @@ class Interpreter implements Expr.Visitor<Object> {
                 if (left instanceof String && right instanceof String) {
                     return (String) left + (String) right;
                 }
-                if (left instanceof String && right instanceof Double) {
-                    String text = right.toString();
-                    if (text.endsWith(".0")) {
-                        text = text.substring(0, text.length() - 2);
-                    }
-                    return (String) left + text;
+                if (left instanceof String && right instanceof Double || left instanceof Double && right instanceof String) {
+                    return stringify(left) + stringify(right);
                 }
+
                 throw new RuntimeError(expr.operator, "Operands must be two numbers or two strings.");
             case SLASH:
                 checkNumberOperands(expr.operator, left, right);
