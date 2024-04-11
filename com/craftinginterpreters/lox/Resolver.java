@@ -21,7 +21,37 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void>{
         return null;
     }
 
-    
+    @Override
+    public Void visitExpressionStmt(Stmt.Expression stmt) {
+        resolve(stmt.expression);
+        return null;
+    }
+
+    @Override
+    public Void visitFunctionStmt(Stmt.Function stmt) {
+        declare(stmt.name);
+        define(stmt.name);
+
+        resolveFunction(stmt);
+        return null;
+    }
+
+    @Override
+    public Void visitIfStmt(Stmt.If stmt) {
+        resolve(stmt.condition);
+        resolve(stmt.thenBranch);
+        if (stmt.elseBranch != null) resolve(stmt.elseBranch);
+        return null;
+    }
+
+    @Override
+    public Void visitReturnStmt(Stmt.Return stmt) {
+        if (stmt.value != null) {
+            resolve(stmt.value);
+        }
+        
+        return null;
+    }
 
     @Override
     public Void visitVarStmt(Stmt.Var stmt) {
@@ -32,6 +62,8 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void>{
         define(stmt.name);
         return null;
     }
+
+    
 
     @Override
     public Void visitAssignExpr(Expr.Assign expr) {
@@ -62,6 +94,16 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void>{
 
     private void resolve(Expr expr) {
         expr.accept(this);
+    }
+
+    private void resolveFunction(Stmt.Function function) {
+        beginScope();
+        for (Token param : functions.params) {
+            declare(param);
+            define(param);
+        }
+        resolve(function.body);
+        endScope();
     }
 
     private void beginScope() {
