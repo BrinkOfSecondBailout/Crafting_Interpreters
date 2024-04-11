@@ -121,12 +121,15 @@ class Parser {
         Stmt body = statement();
 
         if (increment != null) {
+            // if there's an increment
             body = new Stmt.Block(Arrays.asList(body, new Stmt.Expression(increment)));
         }
 
         if (condition == null) condition = new Expr.Literal(true);
+
         body = new Stmt.While(condition, body);
 
+        // if there's an initializer
         if (initializer != null) {
             body = new Stmt.Block(Arrays.asList(initializer, body));
         }
