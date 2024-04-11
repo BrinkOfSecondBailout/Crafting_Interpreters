@@ -63,12 +63,35 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void>{
         return null;
     }
 
-    
+    @Override
+    public Void visitWhileStmt(Stmt.While stmt) {
+        resolve(stmt.condition);
+        resolve(stmt.body);
+        return null;
+    }
 
     @Override
     public Void visitAssignExpr(Expr.Assign expr) {
         resolve(expr.value);
         resolveLocal(expr, expr.name);
+        return null;
+    }
+
+    @Override
+    public Void visitBinaryExpr(Expr.Binary expr) {
+        resolve(expr.left);
+        resolve(expr.right);
+        return null;
+    }
+
+    @Override
+    public Void visitCallExpr(Expr.Call expr) {
+        resolve(expr.callee);
+
+        for (Expr argument : expr.arguments) {
+            resolve(argument);
+        }
+
         return null;
     }
 
