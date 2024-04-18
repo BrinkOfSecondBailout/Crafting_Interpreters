@@ -30,4 +30,4 @@ value.o: value.c
 
 clean:
 	echo "Removing all but the source files"
-	rm main.o chunk.o debug.o memory.o final
+	rm main.o chunk.o debug.o memory.o value.o final
