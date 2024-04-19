@@ -38,7 +38,8 @@ static InterpretResult run() {
         } while (false)
 
     for (;;) {{
-    #ifndef DEBUG_TRACE_EXECUTION
+
+    #ifdef DEBUG_TRACE_EXECUTION
         printf("        ");
         for (Value* slot = vm.stack; slot < vm.stackTop; slot++) {
             printf("[ ");
@@ -48,6 +49,7 @@ static InterpretResult run() {
         printf("\n");
         disassembleInstruction(vm.chunk, (int)(vm.ip - vm.chunk->code));
     #endif
+
         uint8_t instruction;
         switch (instruction = READ_BYTE()) {
             case OP_CONSTANT: {
