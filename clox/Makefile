@@ -2,9 +2,9 @@ CFLAGS = -Wno-implicit-function-declaration
 
 all: final
 
-final: main.o chunk.o debug.o memory.o value.o vm.o
+final: main.o chunk.o debug.o memory.o value.o vm.o scanner.o compiler.o
 	echo "Linking and compiling the final application"
-	gcc $(CFLAGS) main.o chunk.o debug.o memory.o value.o vm.o -o final
+	gcc $(CFLAGS) main.o chunk.o debug.o memory.o value.o vm.o scanner.o compiler.o -o final
 	chmod +x final
 	echo "Successful overall compilation"
 
@@ -32,6 +32,14 @@ vm.o: vm.c
 	echo "Compiling the vm file"
 	gcc $(CFLAGS) -c vm.c
 
+scanner.o: scanner.c
+	echo "Compiling the scanner file"
+	gcc $(CFLAGS) -c scanner.c
+
+compiler.o: compiler.c
+	echo "Compiling the compiler file"
+	gcc $(CFLAGS) -c compiler.c
+
 clean:
 	echo "Removing all but the source files"
-	rm main.o chunk.o debug.o memory.o value.o vm.o final
+	rm main.o chunk.o debug.o memory.o value.o vm.o scanner.o compiler.o final
