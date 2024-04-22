@@ -5,6 +5,7 @@
 #include "debug.h"
 #include "compiler.h"
 
+
 VM vm;
 
 static void resetStack() {
@@ -77,7 +78,7 @@ static InterpretResult run() {
 }
 
 InterpretResult interpret(const char* source) {
-    Chunk chunk;
+    Chunk* chunk;
     initChunk(&chunk);
 
     if (!compile(source, &chunk)) {
