@@ -54,7 +54,7 @@ static InterpretResult run() {
     #define READ_BYTE() (*vm.ip++)
     #define READ_CONSTANT() (vm.chunk->constants.values[READ_BYTE()])
 
-    #define BINARY_OP(op) \
+    #define BINARY_OP(valueType, op) \
         do { \
             if (!IS_NUMBER(peek(0)) || !IS_NUMBER(peek(1))) { \
                 runtimeError("Operands must be numbers."); \
