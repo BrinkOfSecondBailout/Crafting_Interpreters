@@ -2,9 +2,9 @@ CFLAGS = -Wno-implicit-function-declaration
 
 all: final
 
-final: main.o chunk.o debug.o memory.o value.o vm.o scanner.o compiler.o
+final: main.o chunk.o debug.o memory.o value.o vm.o scanner.o compiler.o object.o table.o
 	echo "Linking and compiling the final application"
-	gcc $(CFLAGS) main.o chunk.o debug.o memory.o value.o vm.o scanner.o compiler.o -o final
+	gcc $(CFLAGS) main.o chunk.o debug.o memory.o value.o vm.o scanner.o compiler.o object.o -o  table.o final
 	chmod +x final
 	echo "Successful overall compilation"
 
@@ -40,6 +40,14 @@ compiler.o: compiler.c
 	echo "Compiling the compiler file"
 	gcc $(CFLAGS) -c compiler.c
 
+object.o: object.c
+	echo "Compiling the object file"
+	gcc $(CFLAGS) -c object.c
+
+table.o: table.c
+	echo "Compiling the table file"
+	gcc $(CFLAGS) -c table.c
+
 clean:
 	echo "Removing all but the source files"
-	rm main.o chunk.o debug.o memory.o value.o vm.o scanner.o compiler.o final
+	rm main.o chunk.o debug.o memory.o value.o vm.o scanner.o compiler.o object.o table.o final
