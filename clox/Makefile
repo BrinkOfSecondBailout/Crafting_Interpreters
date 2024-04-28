@@ -4,7 +4,7 @@ all: final
 
 final: main.o chunk.o debug.o memory.o value.o vm.o scanner.o compiler.o object.o table.o
 	echo "Linking and compiling the final application"
-	gcc $(CFLAGS) main.o chunk.o debug.o memory.o value.o vm.o scanner.o compiler.o object.o -o  table.o final
+	gcc $(CFLAGS) main.o chunk.o debug.o memory.o value.o vm.o scanner.o compiler.o object.o table.o -o final
 	chmod +x final
 	echo "Successful overall compilation"
 
