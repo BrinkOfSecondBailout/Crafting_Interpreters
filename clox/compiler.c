@@ -267,19 +267,33 @@ static void expression() {
     parsePrecedence(PREC_ASSIGNMENT);
 }
 
+static void expressionStatement() {
+    expression();
+    consume(TOKEN_SEMICOLON, "Expect ';' after expression.");
+    emitByte(OP_POP);
+}
+
 static void printStatement() {
     expression();
     consume(TOKEN_SEMICOLON, "Expect ';' after value.");
     emitByte(OP_PRINT);
 }
 
+static void synchronize() {
+    
+}
+
 static void declaration() {
     statement();
+
+    if (parser.panicMode) synchronize();
 }
 
 static void statement() {
     if (match(TOKEN_PRINT)) {
         printStatement();
+    } else {
+        expressionStatement();
     }
 }
 
