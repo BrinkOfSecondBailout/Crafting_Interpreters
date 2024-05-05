@@ -57,7 +57,7 @@ typedef struct {
 
     Local locals[UINT8_COUNT];
     int localCount;
-    int scoreDepth;
+    int scopeDepth;
 } Compiler;
 
 Parser parser;
@@ -442,6 +442,7 @@ static uint8_t parseVariable(const char* errorMessage) {
 }
 
 static void markInitialized() {
+    if (current->scopeDepth == 0) return;
     current->locals[current->localCount - 1].depth = current->scopeDepth;
 }
 
@@ -478,6 +479,14 @@ static void block() {
 
     consume(TOKEN_RIGHT_BRACE, "Expect '}' after block.")
 }
+
+static void funDeclaration() {
+    uint8_t global = parseVariable("Expect function name.");
+    markInitialized();
+    function(TYPE_FUNCTION);
+    defineVariable(global);
+}
+
 
 static void varDeclaration() {
     uint8_t global = parseVariable("Expect variable name.");
@@ -547,7 +556,7 @@ static void ifStatement() {
     expression();
     consume(TOKEN_RIGHT_PAREN, "Expect ')' after condition.");
 
-    int thenJump = emitJump(OR_JUMP_IF_FALSE);
+    int thenJump = emitJump(OP_JUMP_IF_FALSE);
 
     emitByte(OP_POP);
     statement();
@@ -607,7 +616,9 @@ static void synchronize() {
 }
 
 static void declaration() {
-    if (match(TOKEN_VAR)) {
+    if (match(TOKEN_FUN)) {
+        funDeclaration();
+    } else if (match(TOKEN_VAR)) {
         varDeclaration();
     } else {
         statement();
