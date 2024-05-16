@@ -17,16 +17,16 @@
 #define AS_STRING(value)    ((ObjString*)AS_OBJ(value))
 #define AS_CSTRING(value)   (((ObjString*)AS_OBJ(value))->chars)
 
-typedef enum {
-    OBJ_FUNCTION,
-    OBJ_NATIVE,
-    OBJ_STRING,
-} ObjType;
+// typedef enum {
+//     OBJ_FUNCTION,
+//     OBJ_NATIVE,
+//     OBJ_STRING,
+// } ObjType;
 
-struct Obj {
-    ObjType type;
-    struct Obj* next;
-};
+// struct Obj {
+//     ObjType type;
+//     struct Obj* next;
+// };
 
 typedef struct {
     Obj obj;
