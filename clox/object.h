@@ -54,6 +54,7 @@ typedef struct {
     ObjFunction* function;
 } ObjClosure;
 
+ObjClosure* newClosure(ObjFunction* function);
 ObjFunction* newFunction();
 ObjNative* newNative(NativeFn function);
 ObjString* takeString(char* chars, int length);
