@@ -24,6 +24,11 @@ void* reallocate(void* pointer, size_t oldSize, size_t newSize) {
     return result;
 }
 
+void markObject(Obj* object) {
+    if (object == NULL) return;
+    object->isMarked = true;
+}
+
 void markValue(Value value) {
     if (IS_OBJ(value)) markObject(AS_OBJ(value));
 }
