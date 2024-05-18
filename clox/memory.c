@@ -2,6 +2,11 @@
 #include "memory.h"
 #include "vm.h"
 
+#ifdef DEBUG_LOG_GC
+#include <stdio.h>
+#include "debug.h"
+#endif
+
 void* reallocate(void* pointer, size_t oldSize, size_t newSize) {
     if (newSize > oldSize) {
 #ifdef DEBUG_STRESS_GC
