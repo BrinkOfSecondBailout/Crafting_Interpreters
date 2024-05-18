@@ -42,6 +42,9 @@ static void freeObject(Obj* object) {
     }
 }
 
+void collectGarbage() {
+}
+
 void freeObjects() {
     Obj* object = vm.objects;
     while (object != NULL) {
