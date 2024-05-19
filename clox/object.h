@@ -69,6 +69,11 @@ typedef struct {
     int upvalueCount;
 } ObjClosure;
 
+typedef struct {
+    Obj obj;
+    ObjString* name;
+} ObjClass;
+
 ObjClosure* newClosure(ObjFunction* function);
 ObjFunction* newFunction();
 ObjNative* newNative(NativeFn function);
