@@ -51,6 +51,37 @@ void markValue(Value value) {
     if (IS_OBJ(value)) markObject(AS_OBJ(value));
 }
 
+static void markArray(ValueArray* array) {
+    for (int i = 0; i < array->count; i++) {
+        markValue(array->values[i]);
+    }
+}
+
+static void blackenObject(Obj* object) {
+    switch (object->type) {
+        case OBJ_CLOSURE: {
+            ObjClosure* closure = (ObjClosure*)object;
+            markObject((Obj*)closure->function);
+            for (int i = 0; i < closure->upvalueCount; i++) {
+                markObject((Obj*)closure->upvalues[i]);
+            }
+            break;
+        }
+        case OBJ_FUNCTION: {
+            ObjFunction* function = (ObjFunction*)object;
+            markObject((Obj*)function->name);
+            markArray(&function->chunk.constants);
+            break;
+        }
+        case OBJ_UPVALUE:
+            markValue(((ObjUpvalue*)object)->closed);
+            break;
+        case OBJ_NATIVE:
+        case OBJ_STRING:
+            break;
+    }
+}
+
 static void freeObject(Obj* object) {
 #ifdef DEBUG_LOG_GC
     printf("%p free type %d\n", (void*)object, object->type);
