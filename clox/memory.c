@@ -27,6 +27,7 @@ void* reallocate(void* pointer, size_t oldSize, size_t newSize) {
 
 void markObject(Obj* object) {
     if (object == NULL) return;
+    if (object->isMarked) return;
 
 #ifdef DEBUG_LOG_GC
     printf("%p mark ", (void*)object);
@@ -58,6 +59,11 @@ static void markArray(ValueArray* array) {
 }
 
 static void blackenObject(Obj* object) {
+#ifdef DEBUG_LOG_GC
+    printf("%p blacken ", (void*)object);
+    printValue(OBJ_VAL(object));
+    printf("\n");
+#endif
     switch (object->type) {
         case OBJ_CLOSURE: {
             ObjClosure* closure = (ObjClosure*)object;
