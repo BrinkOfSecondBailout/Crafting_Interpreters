@@ -661,6 +661,13 @@ static void classDeclaration() {
     classCompiler.enclosing = currentClass;
     currentClass = &classCompiler;
 
+    if (match(TOKEN_LESS)) {
+        consume(TOKEN_IDENTIFIER, "Expect superclass name.");
+        variable(false);
+        namedVariable(className, false);
+        emitByte(OP_INHERIT);
+    }
+
     namedVariable(className, false);
 
     consume(TOKEN_LEFT_BRACE, "Expect '{' before class body.");

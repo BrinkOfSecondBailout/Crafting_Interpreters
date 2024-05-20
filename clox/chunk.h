@@ -4,7 +4,8 @@
 #include "common.h"
 #include "value.h"
 
-typedef enum {
+typedef enum
+{
     OP_CONSTANT,
     OP_NIL,
     OP_TRUE,
@@ -38,7 +39,8 @@ typedef enum {
     OP_CLOSE_UPVALUE,
     OP_RETURN,
     OP_CLASS,
-    OP_METHOD,
+    OP_INHERIT,
+    OP_METHOD
 } OpCode;
 
 typedef struct {
